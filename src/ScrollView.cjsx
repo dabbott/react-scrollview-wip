@@ -1,6 +1,7 @@
 React = require 'react'
 _ = require 'lodash'
 # ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
+Simulator = require './Simulators/FrictionSimulator'
 
 module.exports = class ScrollView extends React.Component
 
@@ -22,7 +23,7 @@ module.exports = class ScrollView extends React.Component
 
     render: ->
         <div>
-            Test
+            {@props.children}
         </div>
 
 ### Native Props
