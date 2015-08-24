@@ -1,4 +1,5 @@
 Link = require('react-router').Link
+ScrollView = require '../../src/ScrollView'
 
 module.exports = React.createClass
   displayName: 'HelloWorld'

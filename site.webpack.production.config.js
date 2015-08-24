@@ -4,12 +4,12 @@ var webpack = require('webpack');
 module.exports = {
   entry: {
     app: [
-      './src/scripts/router'
+      './site/scripts/router'
     ],
   },
   devtool: 'source-map',
   output: {
-      path: path.join(__dirname, "public"),
+      path: path.join(__dirname, "site/public"),
       filename: "bundle.js",
   },
   resolveLoader: {
