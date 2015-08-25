@@ -11,6 +11,7 @@ BIN = ./node_modules/.bin
 
 deploy:
 	git checkout master
+	gulp build:site
 	git subtree split --prefix site/public -b gh-pages
 	git checkout gh-pages
 	cp site/public/* .
