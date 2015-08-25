@@ -9,14 +9,14 @@ BIN = ./node_modules/.bin
 # 	git push origin gh-pages
 # 	git checkout master
 
-deploy:
+publish-gh-pages:
 	git checkout master
 	gulp build:site
 	git subtree split --prefix site/public -b gh-pages
 	git checkout gh-pages
 	cp -r site/public/* .
 	rm -r site
-	git add bundle.js bundle.js.map
+	git add --all .
 	git commit -m "New release"
 	git push -f origin gh-pages:gh-pages
 	git checkout master
