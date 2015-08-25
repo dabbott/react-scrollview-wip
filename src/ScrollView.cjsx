@@ -90,22 +90,21 @@ module.exports = class ScrollView extends React.Component
     _onMouseDown: (e) =>
         return unless e.nativeEvent.which == 1
         e = @_normalizeMouseEvent e
+        @_startRecordingMotion e
+
         document.addEventListener 'mousemove', @_onMouseMove
         document.addEventListener 'mouseup', @_onMouseUp
-        console.log 'mouse down'
-        @_startRecordingMotion e
 
     _onMouseMove: (e) =>
         e = @_normalizeMouseEvent e
-        console.log 'mouse move'
         @_continueRecordingMotion e
 
     _onMouseUp: (e) =>
         e = @_normalizeMouseEvent e
+        @_stopRecordingMotion e
+
         document.removeEventListener 'mousemove', @_onMouseMove
         document.removeEventListener 'mouseup', @_onMouseUp
-        console.log 'mouse up'
-        @_stopRecordingMotion e
 
     ### Recording Motion ###
 
@@ -362,11 +361,21 @@ module.exports = class ScrollView extends React.Component
 
     ### Render ###
 
+    # Default styles should mirror:
+    # https://github.com/facebook/react-native/blob/master/Libraries/Components/ScrollView/ScrollView.js
+    styles =
+        base:
+            flex: 1
+        contentContainerHorizontal:
+            alignSelf: 'flex-start'
+            flexDirection: 'row'
+
     render: ->
-        style = _.extend {}, @props.style,
+        style = _.extend styles.base,
             backgroundColor: 'lightgray'
             height: 200
             overflow: 'hidden'
+        , @props.style
 
         contentContainerOffset = createCSSTransform
             x: @state.offset.x
