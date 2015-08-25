@@ -6,6 +6,7 @@ module.exports = React.createClass
   displayName: 'HelloWorld'
   render: ->
     <div>
-      <header><Link to="hello">Hello</Link> | <Link to="styleguide">Styleguide</Link></header>
       <RouteHandler/>
     </div>
+
+# <header><Link to="index">Index</Link> | <Link to="styleguide">Styleguide</Link></header>

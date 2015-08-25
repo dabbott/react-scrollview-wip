@@ -151,7 +151,6 @@ module.exports = class ScrollView extends React.Component
             y: @_correctedLayerStartPoint.y + offset.y #if @vertical
 
         # Constraints and overdrag
-        console.log 'original point', point, @overdragScale
         point = @_constrainPosition point, @overdragScale
 
         # Direction lock
@@ -165,8 +164,6 @@ module.exports = class ScrollView extends React.Component
 
         @setState
             offset: point
-
-        console.log 'updated  point', point
 
         # @layer.point = @updatePosition(point)
 
@@ -194,9 +191,6 @@ module.exports = class ScrollView extends React.Component
             maxX: 0
             minY: - (contentElement.offsetHeight - scrollElement.clientHeight)
             maxY: 0
-
-        console.log 'constraints', constraints, contentElement.offsetHeight,
-                contentElement.scrollHeight
 
         return constraints
 
@@ -331,8 +325,6 @@ module.exports = class ScrollView extends React.Component
             return
 
         velocity = @getVelocity()
-        console.log 'velocity', velocity
-
         velocityX = velocity.x * @momentumVelocityMultiplier * @speedX
         velocityY = velocity.y * @momentumVelocityMultiplier * @speedY
 

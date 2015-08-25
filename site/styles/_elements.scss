@@ -2,6 +2,8 @@ p, li {
   word-wrap: break-word;
 }
 p {
+  font-family: $base-font-family;
+  font-weight: 300;
   @include hyphens(auto);
   @include margin-leader(0);
   @include margin-trailer(1);
