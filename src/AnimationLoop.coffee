@@ -1,4 +1,3 @@
-_ = require 'lodash'
 EventEmitter = require "eventemitter3"
 
 if window.performance

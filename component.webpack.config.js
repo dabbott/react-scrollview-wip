@@ -2,31 +2,48 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: [
-    "webpack-dev-server/client?http://0.0.0.0:8080",
-    'webpack/hot/only-dev-server',
-    './src/ScrollView'
-  ],
-  devtool: "eval",
-  debug: true,
+  entry: {
+    app: [
+      './src/ScrollView'
+    ],
+  },
+  devtool: 'source-map',
   output: {
-    path: path.join(__dirname, "dist"),
-    filename: 'react-scrollview.js'
+      path: path.join(__dirname, "dist"),
+      filename: 'react-scrollview.js',
+      library: 'ReactScrollView',
+      libraryTarget: 'umd',
   },
   resolveLoader: {
-    modulesDirectories: ['node_modules']
+    modulesDirectories: ['..', 'node_modules']
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new webpack.IgnorePlugin(/vertx/) // https://github.com/webpack/webpack/issues/353
+    new webpack.DefinePlugin({
+      // This has effect on the react lib size.
+      "process.env": {
+        NODE_ENV: JSON.stringify("production")
+      }
+    }),
+    new webpack.IgnorePlugin(/vertx/),
+    new webpack.IgnorePlugin(/un~$/),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
   ],
   resolve: {
     extensions: ['', '.js', '.cjsx', '.coffee']
   },
+  externals: {
+    react: {
+      commonjs: "react",
+      commonjs2: "react",
+      amd: "react",
+      // React dep should be available as window.React, not window.react
+      root: "React"
+    }
+  },
   module: {
     loaders: [
-      { test: /\.cjsx$/, loaders: ['react-hot', 'coffee', 'cjsx']},
+      { test: /\.cjsx$/, loaders: ['coffee', 'cjsx']},
       { test: /\.coffee$/, loader: 'coffee' }
     ]
   }

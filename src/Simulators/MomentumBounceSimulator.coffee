@@ -1,4 +1,4 @@
-_ = require 'lodash'
+_ = require '../Lodash'
 
 Simulator = require "../Simulator"
 SpringSimulator = require "./SpringSimulator"

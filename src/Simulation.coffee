@@ -1,4 +1,4 @@
-_ = require "lodash"
+_ = require "./Lodash"
 Events = require './Events'
 EventEmitter = require 'eventemitter3'
 SpringSimulator = require "./Simulators/SpringSimulator"

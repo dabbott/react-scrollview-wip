@@ -1,5 +1,5 @@
 React = require 'react'
-_ = require 'lodash'
+_ = require './Lodash'
 # ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 Simulation = require './Simulation'
 EventBuffer = require './EventBuffer'
@@ -92,8 +92,8 @@ module.exports = class ScrollView extends React.Component
         e = @_normalizeMouseEvent e
         @_startRecordingMotion e
 
-        document.addEventListener 'mousemove', @_onMouseMove
-        document.addEventListener 'mouseup', @_onMouseUp
+        document.addEventListener Events.TouchMove, @_onMouseMove
+        document.addEventListener Events.TouchEnd, @_onMouseUp
 
     _onMouseMove: (e) =>
         e = @_normalizeMouseEvent e
@@ -103,8 +103,8 @@ module.exports = class ScrollView extends React.Component
         e = @_normalizeMouseEvent e
         @_stopRecordingMotion e
 
-        document.removeEventListener 'mousemove', @_onMouseMove
-        document.removeEventListener 'mouseup', @_onMouseUp
+        document.removeEventListener Events.TouchMove, @_onMouseMove
+        document.removeEventListener Events.TouchEnd, @_onMouseUp
 
     ### Recording Motion ###
 
@@ -361,30 +361,52 @@ module.exports = class ScrollView extends React.Component
 
     ### Render ###
 
-    # Default styles should mirror:
-    # https://github.com/facebook/react-native/blob/master/Libraries/Components/ScrollView/ScrollView.js
+    # Default styles should mirror react-native
     styles =
+        # For sensible CSS defaults:
+        # https://github.com/facebook/css-layout#default-values
+        nativeBase:
+            boxSizing: 'border-box';
+            position: 'relative';
+            display: 'flex';
+            flexDirection: 'column';
+            alignItems: 'stretch';
+            flexShrink: 0;
+            alignContent: 'flex-start';
+            border: '0 solid black';
+            margin: '0';
+            padding: '0';
+
+        # For ScrollView defaults per react-native:
+        # https://github.com/facebook/react-native/blob/master/Libraries/Components/ScrollView/ScrollView.js
         base:
             flex: 1
         contentContainerHorizontal:
             alignSelf: 'flex-start'
             flexDirection: 'row'
 
+        # Needed for ordering horizontal on web
+        horizontal:
+            alignSelf: 'flex-start'
+            flexDirection: 'row'
+
     render: ->
-        style = _.extend styles.base,
-            backgroundColor: 'lightgray'
-            height: 200
+        horizontal = {}
+        contentContainerHorizontal = {}
+        if @props.horizontal
+            horizontal = styles.horizontal
+            contentContainerHorizontal = styles.contentContainerHorizontal
+
+        style = _.extend {}, styles.nativeBase, styles.base,
             overflow: 'hidden'
-        , @props.style
+        , @props.style, horizontal
 
         contentContainerOffset = createCSSTransform
             x: @state.offset.x
             y: @state.offset.y
 
-        contentStyle = _.extend {}, @props.contentContainerStyle,
-                contentContainerOffset, {
-                    backgroundColor: 'rgba(0,0,255,0.2)'
-                }
+        contentStyle = _.extend {}, styles.nativeBase, @props.contentContainerStyle,
+                contentContainerOffset, contentContainerHorizontal
 
         <div style={style}
             ref='scroll'

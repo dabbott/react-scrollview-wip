@@ -1,4 +1,4 @@
-_ = require "lodash"
+_ = require "./Lodash"
 
 Events =
     EventBufferReset : "eventbufferreset"

@@ -3,6 +3,7 @@ gutil = require 'gulp-util'
 webpack = require("webpack")
 WebpackDevServer = require("webpack-dev-server")
 componentWebpackConfig = require("./component.webpack.config.js")
+componentWebpackMinConfig = require("./component.webpack.min.config.js")
 siteWebpackConfig = require("./site.webpack.config.js")
 siteWebpackProductionConfig = require("./site.webpack.production.config.js")
 map = require 'map-stream'
@@ -116,9 +117,6 @@ gulp.task "site:webpack-dev-server", ['site:css'], (callback) ->
 
   return
 
-gulp.task 'default', ->
-  gulp.start 'build:site'
-
 gulp.task 'build:site', ['site:webpack:build', 'site:copy-assets']
 
 gulp.task 'watch:site', ['site:css', 'site:copy-assets', 'site:webpack-dev-server'], ->
@@ -127,17 +125,19 @@ gulp.task 'watch:site', ['site:css', 'site:copy-assets', 'site:webpack-dev-serve
 
 ### Component ###
 
-# Create a single instance of the compiler to allow caching.
-componentDevCompiler = webpack(componentWebpackConfig)
 gulp.task "component:webpack:build-dev", (callback) ->
-
-  # Run webpack.
-  componentDevCompiler.run (err, stats) ->
+  webpack componentWebpackConfig, (err, stats) ->
     throw new gutil.PluginError("component:webpack:build-dev", err)  if err
     gutil.log "[component:webpack:build-dev]", stats.toString(colors: true)
     callback()
-    return
 
-  return
+gulp.task "component:webpack:build-min", (callback) ->
+  webpack componentWebpackMinConfig, (err, stats) ->
+    throw new gutil.PluginError("component:webpack:build-min", err)  if err
+    gutil.log "[component:webpack:build-min]", stats.toString(colors: true)
+    callback()
 
-gulp.task 'build:component', ['component:webpack:build-dev']
+gulp.task 'build:component', ['component:webpack:build-min', 'component:webpack:build-dev']
+
+gulp.task 'default', ->
+  gulp.start 'watch:site'
