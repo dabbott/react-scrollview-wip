@@ -5,16 +5,17 @@ Simulation = require './Simulation'
 EventBuffer = require './EventBuffer'
 Events = require './Events'
 AnimationLoop = require './AnimationLoop'
-browserPrefix = require('./getPrefix')();
+# browserPrefix = require('./getPrefix')();
+normalize = require 'react-style-normalizer'
 
 createCSSTransform = (style) ->
     # Replace unitless items with px
     x = style.x + 'px'
     y = style.y + 'px'
-    out = transform: 'translate(' + x + ',' + y + ')'
+    out = transform: 'translate3d(' + x + ',' + y + ',0)'
     # Add single prefixed property as well
-    if browserPrefix
-        out[browserPrefix + 'Transform'] = out.transform
+    # if browserPrefix
+    #     out[browserPrefix + 'Transform'] = out.transform
     return out
 
 module.exports = class ScrollView extends React.Component
@@ -88,7 +89,8 @@ module.exports = class ScrollView extends React.Component
         return Events.touchEvent e
 
     _onMouseDown: (e) =>
-        return unless e.nativeEvent.which == 1
+        if Events.TouchStart == 'mousedown'
+            return if e.nativeEvent.which != 1
         e = @_normalizeMouseEvent e
         @_startRecordingMotion e
 
@@ -391,6 +393,7 @@ module.exports = class ScrollView extends React.Component
 
         style = _.extend {}, styles.nativeBase, styles.base,
             overflow: 'hidden'
+            transform: 'translate3d(0,0,0)'
         , @props.style, horizontal
 
         contentContainerOffset = createCSSTransform
@@ -400,10 +403,11 @@ module.exports = class ScrollView extends React.Component
         contentStyle = _.extend {}, styles.nativeBase, @props.contentContainerStyle,
                 contentContainerOffset, contentContainerHorizontal
 
-        <div style={style}
+        <div style={normalize(style)}
             ref='scroll'
-            onMouseDown={@_onMouseDown}>
-            <div style={contentStyle}
+            onMouseDown={@_onMouseDown}
+            onTouchStart={@_onMouseDown}>
+            <div style={normalize(contentStyle)}
                 ref='content'>
                     {@props.children}
             </div>

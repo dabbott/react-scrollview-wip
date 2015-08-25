@@ -1,6 +1,6 @@
 _ = require 'lodash'
 Link = require('react-router').Link
-ScrollView = require '../../src/ScrollView'
+ScrollView = require '../../index.js'
 highlightJS = require 'highlight.js'
 
 # http://tools.medialab.sciences-po.fr/iwanthue/index.php
@@ -69,7 +69,7 @@ pastelColor = ->
   '#' + r + g + b
 
 module.exports = React.createClass
-  displayName: 'HelloWorld'
+  displayName: 'Index'
 
   componentDidMount: ->
     _.map document.querySelectorAll('.js'), (node) ->
@@ -110,7 +110,7 @@ module.exports = React.createClass
         lineHeight: '200px'
         color: 'white'
         textAlign: 'center'
-      <div style={inlineStyle}>
+      <div key={"h-#{i}"} style={inlineStyle}>
         <p>{i}</p>
       </div>
 
@@ -121,7 +121,7 @@ module.exports = React.createClass
         lineHeight: '60px'
         color: 'white'
         textAlign: 'center'
-      <div style={inlineStyle}>
+      <div key={"v-#{i}"} style={inlineStyle}>
         <p>{i}</p>
       </div>
 
