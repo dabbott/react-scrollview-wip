@@ -14,9 +14,11 @@ deploy:
 	gulp build:site
 	git subtree split --prefix site/public -b gh-pages
 	git checkout gh-pages
-	cp site/public/* .
+	cp -r site/public/* .
+	rm -r site
 	git add bundle.js bundle.js.map
 	git commit -m "New release"
 	git push -f origin gh-pages:gh-pages
 	git checkout master
 	git branch -D gh-pages
+
