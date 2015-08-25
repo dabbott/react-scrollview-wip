@@ -8,36 +8,51 @@ _ = require 'lodash'
 ###
 module.exports = class Simulator
 
-	Object.defineProperties @prototype,
-		state:
-			get: -> _.clone @_state
-			set: (state) ->
-				@_state = _.clone state
+    Object.defineProperties @prototype,
+        state:
+            get: -> _.clone @_state
+            set: (state) ->
+                @_state = _.clone state
 
-	constructor: (options={}) ->
-		@_state =
-			x: 0
-			v: 0
-		@options = null
-		@setup options
+    constructor: (options={}) ->
+        @_state =
+            x: 0
+            v: 0
+        @options = null
+        @setup options
 
-	###*
-	 * Setup the simulation with input values
-	 * @param  {Object} options Input values
-	###
-	setup: (options) ->
-		throw Error "Not implemented"
+    ###*
+     * Setup the simulation with input values
+     * @param  {Object} options Input values
+    ###
+    setup: (options) ->
+        throw Error "Not implemented"
 
-	###*
-	 * Advance the simulation by delta
-	 * @param  {Number} delta Advance by delta
-	###
-	next: (delta) ->
-		throw Error "Not implemented"
+    ###*
+     * Advance the simulation by delta
+     * @param  {Number} delta Advance by delta
+    ###
+    next: (delta) ->
+        throw Error "Not implemented"
 
-	###*
-	 * Call to determine whether the simulation is finished
-	 * @return {Boolean} Is the simulation finished?
-	###
-	finished: ->
-		throw Error "Not implemented"
+    ###*
+     * Call to determine whether the simulation is finished
+     * @return {Boolean} Is the simulation finished?
+    ###
+    finished: ->
+        throw Error "Not implemented"
+
+    setState: (state) ->
+        @_state =
+            x: state.x
+            v: state.v
+
+    getState: ->
+        state =
+            x: @_state.x
+            v: @_state.v
+        return state
+
+    setOptions: (options={}) ->
+        for k, v of options
+            @options[k] = v

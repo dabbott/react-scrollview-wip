@@ -1,5 +1,3 @@
-Utils = require "./Utils"
-
 Events = {}
 
 isTouch = -> window.ontouchstart is null

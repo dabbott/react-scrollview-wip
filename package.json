@@ -10,6 +10,7 @@
     "coffee-react-transform": "^2.4.0",
     "coffee-script": "^1.9.1",
     "css-loader": "^0.9.1",
+    "eventemitter3": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-compass": "^2.0.3",
     "gulp-cssfont64": "0.0.1",
